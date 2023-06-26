@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Truthify</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+<body>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="{% url 'checkNews' %}">Check News</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="posts">
+    {% for post in posts %}
+    <div class="post">
+      <h2>{{ post.headline }}</h2>
+      <p><a href="{{ post.url }}">Read Article</a></p>
+      {% if post.label == '0' %}
+      <p>Fake News: Yes</p>
+      {% elif post.label == '1' %}
+      <p>Fake News: No</p>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</body>
+</html>
