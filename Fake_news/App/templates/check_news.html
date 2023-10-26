@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Check News</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('form').submit(function(e) {
+        e.preventDefault();
+        var headline = $('#headline').val();
+        var url = $('#url').val();
+
+        // Make an AJAX request
+        $.ajax({
+          type: 'POST',
+          url: '{% url 'checkNews' %}',
+          data: {
+            'headline': headline,
+            'url': url,
+            'csrfmiddlewaretoken': '{{ csrf_token }}'
+          },
+          success: function(response) {
+            showDialog(response.message);
+          },
+          error: function() {
+            showDialog('An error occurred.');
+          }
+        });
+      });
+    });
+
+    function showDialog(message) {
+      alert(message);
+    }
+  </script>
+  <style>
+   
+    /* Header */
+    header {
+      background-color: #333;
+      padding: 10px;
+    }
+
+    nav ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    nav li {
+      display: inline;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      padding: 10px;
+    }
+
+    nav a:hover {
+      background-color: #555;
+    }
+
+    /* Container */
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #f4f4f4;
+      border-radius: 5px;
+    }
+
+    /* Form */
+    form h2 {
+      margin-top: 0;
+    }
+
+    form label {
+      display: block;
+      margin-top: 10px;
+    }
+
+    form input[type="text"],
+    form textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      resize: vertical;
+    }
+
+    form input[type="submit"] {
+      background-color: #333;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+
+    form input[type="submit"]:hover {
+      background-color: #555;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 10px;
+      margin-top: 20px;
+    }
+
+    </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="{% url 'home' %}">Home</a></li>
+      </ul>
+    </nav>
+  </header>
+  <h1>Check News</h1>
+  <form method="post" action="{% url 'checkNews' %}">
+    {% csrf_token %}
+    <label for="headline">Headline:</label>
+    <input type="text" id="headline" name="headline" required><br><br>
+    <label for="url">URL:</label>
+    <input type="text" id="url" name="url" required><br><br>
+    <input type="submit" value="Submit">
+  </form>
+</body>
+</html>
